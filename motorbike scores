@@ -16,6 +16,40 @@ class Motorbike
  int speed=2;
  int size=30;
  color colour;
+ 
+ //setter methods
+ void setX(int x){
+  this.x = x;
+ }
+ void setY(int y){
+  this.y = y;
+ }
+ void setSpeed(int speed){
+  this.speed = speed;
+ }
+ void setSize(int size){
+  this.size = size;
+ }
+ void setColour(color colour){
+  this.color = colour 
+ }
+ 
+ //getter methods
+ int getX(){
+  return x;
+ }
+ int getY(){
+  return y;
+ }
+ int getSpeed(){
+  return speed;
+ }
+ int getSize(){
+  return size;
+ }
+ color getColour(){
+  return colour;
+ }
 
  void render()
  {
