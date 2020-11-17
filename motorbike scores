@@ -1,0 +1,160 @@
+final color RED = color(255,0,0);
+final color BLUE = color(0,0,255);
+final color PURPLE = color(50,0,50);
+final int RACING = 0;
+final int FINISH = 1;
+int winBlue = 0;
+int winRed = 0;
+int winPurple = 0;
+int gameMode = RACING;
+String winner;
+
+class Motorbike
+{
+ int x = 5;  //members
+ int y;
+ int speed=2;
+ int size=30;
+ color colour;
+
+ void render()
+ {
+   float wheelHeight = size/3;
+   fill(colour);
+   triangle(x,y,x+size,y,x+size/2,y-size/2);  //built-in triangle routine
+   drawWheel(x,y,wheelHeight);
+   drawWheel(x+size,y,wheelHeight);
+ }
+ 
+ void drawWheel(int x,int y,float size)
+ {
+    float inner = size*2/3;
+    fill(0);
+    ellipse(x,y,size,size);
+    fill(255);
+    ellipse(x,y,inner,inner);
+ }
+ 
+ Motorbike(int y,color col){ //constructor
+   this.y = y;
+   this.speed = (int)random(5.0);
+   this.colour = col;
+ } 
+ 
+ void move() {
+    speed = (int)random(5.0);  //a random step [0..5]
+    x=x+speed; 
+ }
+ 
+ void update(){
+   move();
+   render();
+ }
+ 
+ boolean finished(){
+    return x>(width-10); //screen width
+  }
+
+} //end of class description
+
+Motorbike redOne,blueOne,purpleOne;
+
+void setup()
+{
+  size(500,100);
+  redOne = new Motorbike(20,RED);
+  blueOne = new Motorbike(40,BLUE);
+  purpleOne = new Motorbike(60,PURPLE);
+}
+
+void draw()
+{
+  if (gameMode == RACING){
+    background(125);
+    scores();
+    line(width - 10, 0,width - 10, height);
+    racing();
+    raceFinish();
+   
+  }
+  else{
+    checkWinner();
+    endText();
+  }
+}
+
+void raceFinish(){
+  if (redOne.x > width-10 || blueOne.x > width-10 || purpleOne.x > width-10 ){
+      gameMode = FINISH;
+  }
+}
+
+void racing(){
+  if (redOne.finished() == true){
+      redOne.speed = 0;
+      redOne.render();
+  }
+  else{
+    redOne.update();
+  }
+  if (blueOne.finished() == true){
+    blueOne.speed = 0;
+    blueOne.render();
+  }
+  else{
+    blueOne.update();
+  }
+  if (purpleOne.finished() == true){
+    purpleOne.speed = 0;
+    purpleOne.render();
+  }
+  else{
+    purpleOne.update();
+  }
+}
+
+void scores(){
+  text("Blue: " + winBlue,10,10);
+  text("Red: " + winRed,70,10);
+  text("Purple: " + winPurple,130,10);
+}
+
+void winnerScore(){
+  if(winner == "Red Motorbike"){
+    winRed ++;
+  }
+  else if(winner == "Blue Motorbike"){
+    winBlue ++;
+  }
+  else if(winner == "Purple Motorbike"){
+    winPurple ++;
+  }
+}
+
+void checkWinner(){
+  if (redOne.x > width-10){
+    winner = "Red Motorbike";
+  }
+  else if(blueOne.x > width-10){
+    winner = "Blue Motorbike";
+  }
+  else if(purpleOne.x > width-10){
+    winner = "Purple Motorbike";
+  }
+}
+
+void endText(){
+  winnerScore();
+  text("GAME FINISHED",200,50);
+  text("The winner is " + winner,200,60);
+  text("Press SPACE to restart",200,70);
+}
+
+void keyPressed(){
+  if (key == ' '){
+    gameMode = RACING;
+    redOne.x = 5;
+    blueOne.x = 5;
+    purpleOne.x = 5;
+  }
+}
